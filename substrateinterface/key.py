@@ -23,12 +23,12 @@ JUNCTION_ID_LEN = 32
 
 
 class DeriveJunction:
-    def __init__(self, chain_code, is_hard=False):
+    def __init__(self, chain_code, is_hard = False):
         self.chain_code = chain_code
         self.is_hard = is_hard
 
     @classmethod
-    def from_derive_path(cls, path: str, is_hard=False):
+    def from_derive_path(cls, path: str, is_hard = False):
 
         if path.isnumeric():
             byte_length = ceil(int(path).bit_length() / 8)
@@ -39,11 +39,11 @@ class DeriveJunction:
             path_scale.encode(path)
 
             if len(path_scale.data) > JUNCTION_ID_LEN:
-                chain_code = blake2b(path_scale.data.data, digest_size=32).digest()
+                chain_code = blake2b(path_scale.data.data, digest_size = 32).digest()
             else:
                 chain_code = bytes(path_scale.data.data.ljust(32, b'\x00'))
 
-        return cls(chain_code=chain_code, is_hard=is_hard)
+        return cls(chain_code = chain_code, is_hard = is_hard)
 
 
 def extract_derive_path(derive_path: str):
@@ -57,7 +57,7 @@ def extract_derive_path(derive_path: str):
 
         for path_separator, path_value in paths:
             junctions.append(DeriveJunction.from_derive_path(
-                path=path_value, is_hard=path_separator == '//')
+                path = path_value, is_hard = path_separator == '//')
             )
 
     if path_check != derive_path:

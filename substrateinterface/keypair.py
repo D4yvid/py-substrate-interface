@@ -106,7 +106,7 @@ class Keypair:
         self.derive_path = None
 
         if crypto_type != KeypairType.ECDSA and ss58_address and not public_key:
-            public_key = ss58_decode(ss58_address, valid_ss58_format=ss58_format)
+            public_key = ss58_decode(ss58_address, valid_ss58_format = ss58_format)
 
         if private_key:
 
@@ -138,7 +138,7 @@ class Keypair:
                 raise ValueError('Public key should be 32 bytes long')
 
             if not ss58_address:
-                ss58_address = ss58_encode(public_key, ss58_format=ss58_format)
+                ss58_address = ss58_encode(public_key, ss58_format = ss58_format)
 
         self.ss58_format: int = ss58_format
 
@@ -183,7 +183,7 @@ class Keypair:
         return bip39_validate(mnemonic, language_code)
 
     @classmethod
-    def create_from_mnemonic(cls, mnemonic: str, ss58_format=42, crypto_type=KeypairType.SR25519,
+    def create_from_mnemonic(cls, mnemonic: str, ss58_format = 42, crypto_type = KeypairType.SR25519,
                              language_code: str = MnemonicLanguageCode.ENGLISH) -> 'Keypair':
         """
         Create a Keypair for given memonic
@@ -205,15 +205,15 @@ class Keypair:
                 raise ValueError("ECDSA mnemonic only supports english")
 
             private_key = mnemonic_to_ecdsa_private_key(mnemonic)
-            keypair = cls.create_from_private_key(private_key, ss58_format=ss58_format, crypto_type=crypto_type)
+            keypair = cls.create_from_private_key(private_key, ss58_format = ss58_format, crypto_type = crypto_type)
 
         else:
             seed_array = bip39_to_mini_secret(mnemonic, "", language_code)
 
             keypair = cls.create_from_seed(
-                seed_hex=binascii.hexlify(bytearray(seed_array)).decode("ascii"),
-                ss58_format=ss58_format,
-                crypto_type=crypto_type
+                seed_hex = binascii.hexlify(bytearray(seed_array)).decode("ascii"),
+                ss58_format = ss58_format,
+                crypto_type = crypto_type
             )
 
         keypair.mnemonic = mnemonic
@@ -222,7 +222,7 @@ class Keypair:
 
     @classmethod
     def create_from_seed(
-            cls, seed_hex: Union[bytes, str], ss58_format: Optional[int] = 42, crypto_type=KeypairType.SR25519
+            cls, seed_hex: Union[bytes, str], ss58_format: Optional[int] = 42, crypto_type = KeypairType.SR25519
     ) -> 'Keypair':
         """
         Create a Keypair for given seed
@@ -251,13 +251,13 @@ class Keypair:
         ss58_address = ss58_encode(public_key, ss58_format)
 
         return cls(
-            ss58_address=ss58_address, public_key=public_key, private_key=private_key,
-            ss58_format=ss58_format, crypto_type=crypto_type, seed_hex=seed_hex
+            ss58_address = ss58_address, public_key = public_key, private_key = private_key,
+            ss58_format = ss58_format, crypto_type = crypto_type, seed_hex = seed_hex
         )
 
     @classmethod
     def create_from_uri(
-            cls, suri: str, ss58_format: Optional[int] = 42, crypto_type=KeypairType.SR25519, language_code: str = MnemonicLanguageCode.ENGLISH
+            cls, suri: str, ss58_format: Optional[int] = 42, crypto_type = KeypairType.SR25519, language_code: str = MnemonicLanguageCode.ENGLISH
     ) -> 'Keypair':
         """
         Creates Keypair for specified suri in following format: `[mnemonic]/[soft-path]//[hard-path]`
@@ -286,18 +286,18 @@ class Keypair:
                 raise ValueError("ECDSA mnemonic only supports english")
 
             private_key = mnemonic_to_ecdsa_private_key(
-                mnemonic=suri_parts['phrase'],
-                str_derivation_path=suri_parts['path'][1:],
-                passphrase=suri_parts['password'] or ''
+                mnemonic = suri_parts['phrase'],
+                str_derivation_path = suri_parts['path'][1:],
+                passphrase = suri_parts['password'] or ''
             )
-            derived_keypair = cls.create_from_private_key(private_key, ss58_format=ss58_format, crypto_type=crypto_type)
+            derived_keypair = cls.create_from_private_key(private_key, ss58_format = ss58_format, crypto_type = crypto_type)
         else:
 
             if suri_parts['password']:
                 raise NotImplementedError(f"Passwords in suri not supported for crypto_type '{crypto_type}'")
 
             derived_keypair = cls.create_from_mnemonic(
-                suri_parts['phrase'], ss58_format=ss58_format, crypto_type=crypto_type, language_code=language_code
+                suri_parts['phrase'], ss58_format = ss58_format, crypto_type = crypto_type, language_code = language_code
             )
 
             if suri_parts['path'] != '':
@@ -328,7 +328,7 @@ class Keypair:
                             b''
                         )
 
-                derived_keypair = Keypair(public_key=child_pubkey, private_key=child_privkey, ss58_format=ss58_format)
+                derived_keypair = Keypair(public_key = child_pubkey, private_key = child_privkey, ss58_format = ss58_format)
 
         return derived_keypair
 
@@ -353,8 +353,8 @@ class Keypair:
         """
 
         return cls(
-            ss58_address=ss58_address, public_key=public_key, private_key=private_key,
-            ss58_format=ss58_format, crypto_type=crypto_type
+            ss58_address = ss58_address, public_key = public_key, private_key = private_key,
+            ss58_format = ss58_format, crypto_type = crypto_type
         )
 
     @classmethod
@@ -391,7 +391,7 @@ class Keypair:
         if ss58_format is None and 'address' in json_data:
             ss58_format = get_ss58_format(json_data['address'])
 
-        return cls.create_from_private_key(private_key, public_key, ss58_format=ss58_format, crypto_type=crypto_type)
+        return cls.create_from_private_key(private_key, public_key, ss58_format = ss58_format, crypto_type = crypto_type)
 
     def export_to_encrypted_json(self, passphrase: str, name: str = None) -> dict:
         """
@@ -567,4 +567,4 @@ class Keypair:
         if self.ss58_address:
             return '<Keypair (address={})>'.format(self.ss58_address)
         else:
-            return '<Keypair (public_key=0x{})>'.format(self.public_key.hex())
+            return '<Keypair (public_key = 0x{})>'.format(self.public_key.hex())

@@ -17,9 +17,9 @@
 from functools import lru_cache
 
 
-def block_dependent_lru_cache(maxsize=10, typed=False, block_arg_index=None):
+def block_dependent_lru_cache(maxsize = 10, typed = False, block_arg_index = None):
     def decorator(f):
-        cached_func = lru_cache(maxsize=maxsize, typed=typed)(f)
+        cached_func = lru_cache(maxsize = maxsize, typed = typed)(f)
 
         def wrapper(*args, **kwargs):
 

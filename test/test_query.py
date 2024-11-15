@@ -27,14 +27,14 @@ class QueryTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.kusama_substrate = SubstrateInterface(
-            url=settings.KUSAMA_NODE_URL,
-            ss58_format=2,
+            url = settings.KUSAMA_NODE_URL,
+            ss58_format = 2,
             type_registry_preset='kusama'
         )
 
         cls.polkadot_substrate = SubstrateInterface(
-            url=settings.POLKADOT_NODE_URL,
-            ss58_format=0,
+            url = settings.POLKADOT_NODE_URL,
+            ss58_format = 0,
             type_registry_preset='polkadot'
         )
 

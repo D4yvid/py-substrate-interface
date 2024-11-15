@@ -28,8 +28,8 @@ class KusamaTypeRegistryTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.substrate = SubstrateInterface(
-            url=settings.KUSAMA_NODE_URL,
-            ss58_format=2,
+            url = settings.KUSAMA_NODE_URL,
+            ss58_format = 2,
             type_registry_preset='kusama'
         )
 
@@ -46,8 +46,8 @@ class PolkadotTypeRegistryTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.substrate = SubstrateInterface(
-            url=settings.POLKADOT_NODE_URL,
-            ss58_format=0,
+            url = settings.POLKADOT_NODE_URL,
+            ss58_format = 0,
             type_registry_preset='polkadot'
         )
 
@@ -65,8 +65,8 @@ class RococoTypeRegistryTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.substrate = SubstrateInterface(
-            url=settings.ROCOCO_NODE_URL,
-            ss58_format=42,
+            url = settings.ROCOCO_NODE_URL,
+            ss58_format = 42,
             type_registry_preset='rococo'
         )
 
@@ -85,7 +85,7 @@ class RococoTypeRegistryTestCase(unittest.TestCase):
 #     def setUpClass(cls):
 #         cls.substrate = SubstrateInterface(
 #             url="ws://127.0.0.1:9944",
-#             ss58_format=42,
+#             ss58_format = 42,
 #             type_registry_preset='development'
 #         )
 #
@@ -103,7 +103,7 @@ class ReloadTypeRegistryTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self.substrate = SubstrateInterface(
             url='dummy',
-            ss58_format=42,
+            ss58_format = 42,
             type_registry_preset='test'
         )
 
@@ -137,7 +137,7 @@ class ReloadTypeRegistryTestCase(unittest.TestCase):
         self.assertEqual(u64_cls, self.substrate.runtime_config.get_decoder_class('Index'))
 
         # Reload type registry
-        self.substrate.reload_type_registry(use_remote_preset=False)
+        self.substrate.reload_type_registry(use_remote_preset = False)
 
         self.assertEqual(u32_cls, self.substrate.runtime_config.get_decoder_class('Index'))
 
@@ -153,11 +153,11 @@ class AutodiscoverV14RuntimeTestCase(unittest.TestCase):
         cls.metadata_fixture_dict = load_type_registry_file(
             os.path.join(module_path, 'fixtures', 'metadata_hex.json')
         )
-        cls.runtime_config = RuntimeConfigurationObject(implements_scale_info=True)
+        cls.runtime_config = RuntimeConfigurationObject(implements_scale_info = True)
         cls.runtime_config.update_type_registry(load_type_registry_preset("core"))
 
         cls.metadata_obj = cls.runtime_config.create_scale_object(
-            'MetadataVersioned', data=ScaleBytes(cls.metadata_fixture_dict['V14'])
+            'MetadataVersioned', data = ScaleBytes(cls.metadata_fixture_dict['V14'])
         )
         cls.metadata_obj.decode()
 
@@ -165,7 +165,7 @@ class AutodiscoverV14RuntimeTestCase(unittest.TestCase):
 
         class MockedSubstrateInterface(SubstrateInterface):
 
-            def rpc_request(self, method, params, result_handler=None):
+            def rpc_request(self, method, params, result_handler = None):
 
                 if method == 'system_chain':
                     return {
@@ -177,7 +177,7 @@ class AutodiscoverV14RuntimeTestCase(unittest.TestCase):
                 return super().rpc_request(method, params, result_handler)
 
         self.substrate = MockedSubstrateInterface(
-            url=settings.KUSAMA_NODE_URL
+            url = settings.KUSAMA_NODE_URL
         )
 
     def test_type_reg_preset_applied(self):
@@ -189,10 +189,10 @@ class AutodetectAddressTypeTestCase(unittest.TestCase):
 
     def test_default_substrate_address(self):
         substrate = SubstrateInterface(
-            url=settings.POLKADOT_NODE_URL, auto_discover=False
+            url = settings.POLKADOT_NODE_URL, auto_discover = False
         )
 
-        keypair_alice = Keypair.create_from_uri('//Alice', ss58_format=substrate.ss58_format)
+        keypair_alice = Keypair.create_from_uri('//Alice', ss58_format = substrate.ss58_format)
 
         call = substrate.compose_call(
             call_module='Balances',
@@ -209,10 +209,10 @@ class AutodetectAddressTypeTestCase(unittest.TestCase):
 
     def test_eth_address(self):
         substrate = SubstrateInterface(
-            url=settings.MOONBEAM_NODE_URL, auto_discover=False
+            url = settings.MOONBEAM_NODE_URL, auto_discover = False
         )
 
-        keypair_alice = Keypair.create_from_mnemonic(Keypair.generate_mnemonic(), crypto_type=KeypairType.ECDSA)
+        keypair_alice = Keypair.create_from_mnemonic(Keypair.generate_mnemonic(), crypto_type = KeypairType.ECDSA)
 
         call = substrate.compose_call(
             call_module='Balances',

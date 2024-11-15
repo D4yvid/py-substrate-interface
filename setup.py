@@ -72,7 +72,7 @@ setup(
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version=version,  # Required
+    version = version,  # Required
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
@@ -87,14 +87,14 @@ setup(
     #
     # This field corresponds to the "Description" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#description-optional
-    long_description=long_description,  # Optional
+    long_description = long_description,  # Optional
 
     # Denotes that our long_description is in Markdown; valid values are
     # text/plain, text/x-rst, and text/markdown
     #
     # Optional if long_description is written in reStructuredText (rst) but
     # required for plain-text or Markdown; if unspecified, "applications should
-    # attempt to render [the long_description] as text/x-rst; charset=UTF-8 and
+    # attempt to render [the long_description] as text/x-rst; charset = UTF-8 and
     # fall back to text/plain if it is not valid rst" (see link below)
     #
     # This field corresponds to the "Description-Content-Type" metadata field:
@@ -158,8 +158,8 @@ setup(
     #
     #   py_modules=["my_module"],
     #
-    #packages=find_packages(exclude=['contrib', 'docs', 'tests', 'test']),  # Required
-    packages=find_packages(exclude=['contrib', 'docs', 'tests', 'test']),  # Required
+    #packages = find_packages(exclude=['contrib', 'docs', 'tests', 'test']),  # Required
+    packages = find_packages(exclude=['contrib', 'docs', 'tests', 'test']),  # Required
 
     # Specify which Python versions you support. In contrast to the
     # 'Programming Language' classifiers above, 'pip install' will check this
@@ -234,7 +234,7 @@ setup(
 
     # entry_points={  # Optional
     #     'console_scripts': [
-    #         'sample=sample:main',
+    #         'sample = sample:main',
     #     ],
     # },
 

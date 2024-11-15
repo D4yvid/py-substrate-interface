@@ -81,9 +81,9 @@ class StorageKey:
             value_scale_type = storage_item.get_value_type_string()
 
         return cls(
-            pallet=None, storage_function=None, params=None,
-            data=data, metadata=metadata,
-            value_scale_type=value_scale_type, runtime_config=runtime_config
+            pallet = None, storage_function = None, params = None,
+            data = data, metadata = metadata,
+            value_scale_type = value_scale_type, runtime_config = runtime_config
         )
 
     @classmethod
@@ -106,8 +106,8 @@ class StorageKey:
         StorageKey
         """
         storage_key_obj = cls(
-            pallet=pallet, storage_function=storage_function, params=params,
-            data=None, runtime_config=runtime_config, metadata=metadata, value_scale_type=None
+            pallet = pallet, storage_function = storage_function, params = params,
+            data = None, runtime_config = runtime_config, metadata = metadata, value_scale_type = None
         )
 
         storage_key_obj.generate()
@@ -174,7 +174,7 @@ class StorageKey:
                     self.params_encoded.append(param)
                 else:
                     param = self.convert_storage_parameter(param_types[idx], param)
-                    param_obj = self.runtime_config.create_scale_object(type_string=param_types[idx])
+                    param_obj = self.runtime_config.create_scale_object(type_string = param_types[idx])
                     self.params_encoded.append(param_obj.encode(param))
 
             for idx, param in enumerate(self.params_encoded):
@@ -250,9 +250,9 @@ class StorageKey:
 
         # Decode SCALE result data
         updated_obj = self.runtime_config.create_scale_object(
-            type_string=change_scale_type,
-            data=data,
-            metadata=self.metadata
+            type_string = change_scale_type,
+            data = data,
+            metadata = self.metadata
         )
         updated_obj.decode()
         updated_obj.meta_info = {'result_found': result_found}
@@ -263,6 +263,6 @@ class StorageKey:
         if self.pallet and self.storage_function:
             return f'<StorageKey(pallet={self.pallet}, storage_function={self.storage_function}, params={self.params})>'
         elif self.data:
-            return f'<StorageKey(data=0x{self.data.hex()})>'
+            return f'<StorageKey(data = 0x{self.data.hex()})>'
         else:
             return repr(self)

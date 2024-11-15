@@ -28,14 +28,14 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.kusama_substrate = SubstrateInterface(
-            url=settings.KUSAMA_NODE_URL,
-            ss58_format=2,
+            url = settings.KUSAMA_NODE_URL,
+            ss58_format = 2,
             type_registry_preset='kusama'
         )
 
         cls.polkadot_substrate = SubstrateInterface(
-            url=settings.POLKADOT_NODE_URL,
-            ss58_format=0,
+            url = settings.POLKADOT_NODE_URL,
+            ss58_format = 0,
             type_registry_preset='polkadot'
         )
 
@@ -60,7 +60,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
             }
         )
 
-        extrinsic = self.kusama_substrate.create_signed_extrinsic(call=call, keypair=self.keypair, tip=1)
+        extrinsic = self.kusama_substrate.create_signed_extrinsic(call = call, keypair = self.keypair, tip = 1)
 
         decoded_extrinsic = self.kusama_substrate.create_scale_object("Extrinsic")
         decoded_extrinsic.decode(extrinsic.data)
@@ -84,7 +84,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
                 }
             )
 
-            extrinsic = substrate.create_signed_extrinsic(call=call, keypair=self.keypair, era={'period': 64})
+            extrinsic = substrate.create_signed_extrinsic(call = call, keypair = self.keypair, era={'period': 64})
 
             try:
                 substrate.submit_extrinsic(extrinsic)
@@ -114,7 +114,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
             }
         )
 
-        extrinsic = self.polkadot_substrate.create_signed_extrinsic(call=call, keypair=self.keypair, era={'period': 64})
+        extrinsic = self.polkadot_substrate.create_signed_extrinsic(call = call, keypair = self.keypair, era={'period': 64})
 
         # Decode extrinsic again as test
         extrinsic.decode(extrinsic.data)
@@ -133,9 +133,9 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
             }
         )
 
-        keypair_alice = Keypair.create_from_uri('//Alice', ss58_format=self.polkadot_substrate.ss58_format)
-        keypair_bob = Keypair.create_from_uri('//Bob', ss58_format=self.polkadot_substrate.ss58_format)
-        keypair_charlie = Keypair.create_from_uri('//Charlie', ss58_format=self.polkadot_substrate.ss58_format)
+        keypair_alice = Keypair.create_from_uri('//Alice', ss58_format = self.polkadot_substrate.ss58_format)
+        keypair_bob = Keypair.create_from_uri('//Bob', ss58_format = self.polkadot_substrate.ss58_format)
+        keypair_charlie = Keypair.create_from_uri('//Charlie', ss58_format = self.polkadot_substrate.ss58_format)
 
         multisig_account = self.kusama_substrate.generate_multisig_account(
             signatories=[
@@ -143,7 +143,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
                 keypair_bob.ss58_address,
                 keypair_charlie.ss58_address
             ],
-            threshold=2
+            threshold = 2
         )
 
         extrinsic = self.kusama_substrate.create_multisig_extrinsic(call, self.keypair, multisig_account, era={'period': 64})
@@ -178,7 +178,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
                 'value': 2000
             }
         )
-        payment_info = self.kusama_substrate.get_payment_info(call=call, keypair=keypair)
+        payment_info = self.kusama_substrate.get_payment_info(call = call, keypair = keypair)
 
         self.assertIn('class', payment_info)
         self.assertIn('partialFee', payment_info)
@@ -196,7 +196,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
             }
         )
 
-        signature_payload = self.kusama_substrate.generate_signature_payload(call=call)
+        signature_payload = self.kusama_substrate.generate_signature_payload(call = call)
 
         self.assertEqual(signature_payload.length, 256)
 
@@ -210,7 +210,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
             }
         )
 
-        signature_payload = self.kusama_substrate.generate_signature_payload(call=call)
+        signature_payload = self.kusama_substrate.generate_signature_payload(call = call)
 
         self.assertEqual(signature_payload.length, 32)
 
@@ -229,20 +229,20 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
                         'ada78b3aaf63a8b41e035acfdb0f650634863f83'
 
         extrinsic = self.kusama_substrate.create_signed_extrinsic(
-            call=call, keypair=self.keypair, signature=f'0x{signature_hex}'
+            call = call, keypair = self.keypair, signature = f'0x{signature_hex}'
         )
 
         self.assertEqual(extrinsic.value['signature']['Sr25519'], f'0x{signature_hex[2:]}')
 
         extrinsic = self.kusama_substrate.create_signed_extrinsic(
-            call=call, keypair=self.keypair, signature=bytes.fromhex(signature_hex)
+            call = call, keypair = self.keypair, signature = bytes.fromhex(signature_hex)
         )
 
         self.assertEqual(extrinsic.value['signature']['Sr25519'], f'0x{signature_hex[2:]}')
 
     def test_check_extrinsic_receipt(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0x5bcb59fdfc2ba852dabf31447b84764df85c8f64073757ea800f25b48e63ebd2",
             block_hash="0x8dae706d0f4882a7db484e708e27d9363a3adfa53baaac8b58c30f7c519a2520"
         )
@@ -250,7 +250,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
         self.assertTrue(result.is_success)
 
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0x43ef739a8e4782e306908e710f333e65843fb35a57ec2a19df21cdc12258fbd8",
             block_hash="0x8ab60dacd8535d948a755f72a9e09274d17f00693bbbdb55fa898db60a9ce580"
         )
@@ -276,7 +276,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_check_extrinsic_failed_result(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0xa5f2b9f4b8ea9f357780dd49010c99708f580a02624e4500af24b20b92773100",
             block_hash="0x4b459839cc0b8c807061b5bfc68ca78b2039296174ed0a7754a70b84b287181e"
         )
@@ -289,7 +289,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_check_extrinsic_failed_error_message(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0xa5f2b9f4b8ea9f357780dd49010c99708f580a02624e4500af24b20b92773100",
             block_hash="0x4b459839cc0b8c807061b5bfc68ca78b2039296174ed0a7754a70b84b287181e"
         )
@@ -298,7 +298,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_check_extrinsic_failed_error_message2(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0x6147478693eb1ccbe1967e9327c5db093daf5f87bbf6822b4bd8d3dc3bf4e356",
             block_hash="0x402f22856baf7aaca9510c317b1c392e4d9e6133aabcc0c26f6c5b40dcde70a7"
         )
@@ -320,7 +320,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_check_extrinsic_total_fee_amount(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0xa5f2b9f4b8ea9f357780dd49010c99708f580a02624e4500af24b20b92773100",
             block_hash="0x4b459839cc0b8c807061b5bfc68ca78b2039296174ed0a7754a70b84b287181e"
         )
@@ -329,7 +329,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_check_extrinsic_total_fee_amount_portable_registry(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0x5937b3fc03ffc62c84d536c3f1949e030b61ca5c680bfd237726e55a75840d1d",
             block_hash="0x9d693c4fa4d54893bd6b0916843fcb5b7380f43cbea5c462be9213f536fd9a49"
         )
@@ -338,7 +338,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_check_extrinsic_total_fee_amount2(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0x7347df791b8e47a5eba29c2123783cac638acbe63b4a99024eade4e7805d7ab7",
             block_hash="0xffbf45b4dfa1be1929b519d5bf6558b2c972ea2e0fe24b623111b238cf67e095"
         )
@@ -352,7 +352,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_check_failed_extrinsic_weight(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0xa5f2b9f4b8ea9f357780dd49010c99708f580a02624e4500af24b20b92773100",
             block_hash="0x4b459839cc0b8c807061b5bfc68ca78b2039296174ed0a7754a70b84b287181e"
         )
@@ -361,7 +361,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_check_success_extrinsic_weight(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0x5bcb59fdfc2ba852dabf31447b84764df85c8f64073757ea800f25b48e63ebd2",
             block_hash="0x8dae706d0f4882a7db484e708e27d9363a3adfa53baaac8b58c30f7c519a2520"
         )
@@ -370,7 +370,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_check_success_extrinsic_weight2(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0x7347df791b8e47a5eba29c2123783cac638acbe63b4a99024eade4e7805d7ab7",
             block_hash="0xffbf45b4dfa1be1929b519d5bf6558b2c972ea2e0fe24b623111b238cf67e095"
         )
@@ -379,7 +379,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_check_success_extrinsic_weight_portable_registry(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0x5937b3fc03ffc62c84d536c3f1949e030b61ca5c680bfd237726e55a75840d1d",
             block_hash="0x9d693c4fa4d54893bd6b0916843fcb5b7380f43cbea5c462be9213f536fd9a49"
         )
@@ -388,7 +388,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
 
     def test_extrinsic_result_set_readonly_attr(self):
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0xa5f2b9f4b8ea9f357780dd49010c99708f580a02624e4500af24b20b92773100"
         )
         with self.assertRaises(AttributeError):
@@ -400,7 +400,7 @@ class CreateExtrinsicsTestCase(unittest.TestCase):
     def test_extrinsic_result_no_blockhash_check_events(self):
 
         result = ExtrinsicReceipt(
-            substrate=self.kusama_substrate,
+            substrate = self.kusama_substrate,
             extrinsic_hash="0xa5f2b9f4b8ea9f357780dd49010c99708f580a02624e4500af24b20b92773100"
         )
 

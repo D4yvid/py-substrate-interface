@@ -26,8 +26,8 @@ class TestInit(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.kusama_substrate = SubstrateInterface(url=settings.KUSAMA_NODE_URL)
-        cls.polkadot_substrate = SubstrateInterface(url=settings.POLKADOT_NODE_URL)
+        cls.kusama_substrate = SubstrateInterface(url = settings.KUSAMA_NODE_URL)
+        cls.polkadot_substrate = SubstrateInterface(url = settings.POLKADOT_NODE_URL)
 
     def test_chain(self):
         self.assertEqual('Kusama', self.kusama_substrate.chain)
@@ -54,21 +54,21 @@ class TestInit(unittest.TestCase):
         self.assertEqual(10, self.polkadot_substrate.token_decimals)
 
     def test_override_ss58_format_init(self):
-        substrate = SubstrateInterface(url=settings.KUSAMA_NODE_URL, ss58_format=99)
+        substrate = SubstrateInterface(url = settings.KUSAMA_NODE_URL, ss58_format = 99)
         self.assertEqual(99, substrate.ss58_format)
 
     def test_override_incorrect_ss58_format(self):
-        substrate = SubstrateInterface(url=settings.KUSAMA_NODE_URL)
+        substrate = SubstrateInterface(url = settings.KUSAMA_NODE_URL)
         with self.assertRaises(TypeError):
             substrate.ss58_format = 'test'
 
     def test_override_token_symbol(self):
-        substrate = SubstrateInterface(url=settings.KUSAMA_NODE_URL)
+        substrate = SubstrateInterface(url = settings.KUSAMA_NODE_URL)
         substrate.token_symbol = 'TST'
         self.assertEqual('TST', substrate.token_symbol)
 
     def test_override_incorrect_token_decimals(self):
-        substrate = SubstrateInterface(url=settings.KUSAMA_NODE_URL)
+        substrate = SubstrateInterface(url = settings.KUSAMA_NODE_URL)
         with self.assertRaises(TypeError):
             substrate.token_decimals = 'test'
 
@@ -95,7 +95,7 @@ class TestInit(unittest.TestCase):
         self.assertIsNone(block_number2)
 
     def test_context_manager(self):
-        with SubstrateInterface(url=settings.KUSAMA_NODE_URL) as substrate:
+        with SubstrateInterface(url = settings.KUSAMA_NODE_URL) as substrate:
             self.assertTrue(substrate.websocket.connected)
             self.assertEqual(2, substrate.ss58_format)
 
@@ -106,7 +106,7 @@ class TestInit(unittest.TestCase):
         with self.assertRaises(RemainingScaleBytesNotEmptyException):
             self.kusama_substrate.decode_scale('u8', ScaleBytes('0x0101'))
 
-        with SubstrateInterface(url=settings.KUSAMA_NODE_URL, config={'strict_scale_decode': False}) as substrate:
+        with SubstrateInterface(url = settings.KUSAMA_NODE_URL, config={'strict_scale_decode': False}) as substrate:
             result = substrate.decode_scale('u8', ScaleBytes('0x0101'))
             self.assertEqual(result, 1)
 

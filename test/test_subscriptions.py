@@ -25,7 +25,7 @@ class SubscriptionsTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.substrate = SubstrateInterface(
-            url=settings.POLKADOT_NODE_URL
+            url = settings.POLKADOT_NODE_URL
         )
 
     def test_query_subscription(self):
@@ -34,7 +34,7 @@ class SubscriptionsTestCase(unittest.TestCase):
 
             return {'update_nr': update_nr, 'subscription_id': subscription_id}
 
-        result = self.substrate.query("System", "Events", [], subscription_handler=subscription_handler)
+        result = self.substrate.query("System", "Events", [], subscription_handler = subscription_handler)
 
         self.assertIsNotNone(result['subscription_id'])
 
@@ -53,7 +53,7 @@ class SubscriptionsTestCase(unittest.TestCase):
         ]
 
         result = self.substrate.subscribe_storage(
-            storage_keys=storage_keys, subscription_handler=subscription_handler
+            storage_keys = storage_keys, subscription_handler = subscription_handler
         )
 
         self.assertIsNotNone(result['subscription_id'])
@@ -63,7 +63,7 @@ class SubscriptionsTestCase(unittest.TestCase):
         def block_subscription_handler(obj, update_nr, subscription_id):
             return obj['header']['number']
 
-        result = self.substrate.subscribe_block_headers(block_subscription_handler, finalized_only=True)
+        result = self.substrate.subscribe_block_headers(block_subscription_handler, finalized_only = True)
 
         self.assertGreater(result, 0)
 

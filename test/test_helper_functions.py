@@ -32,7 +32,7 @@ class TestHelperFunctions(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
 
-        cls.substrate = SubstrateInterface(url='dummy', ss58_format=42, type_registry_preset='kusama')
+        cls.substrate = SubstrateInterface(url='dummy', ss58_format = 42, type_registry_preset='kusama')
 
         cls.metadata_fixture_dict = load_type_registry_file(
             os.path.join(os.path.dirname(__file__), 'fixtures', 'metadata_hex.json')
@@ -41,7 +41,7 @@ class TestHelperFunctions(unittest.TestCase):
         metadata_decoder = cls.substrate.runtime_config.create_scale_object('MetadataVersioned')
         metadata_decoder.decode(ScaleBytes(cls.metadata_fixture_dict[cls.test_metadata_version]))
 
-        cls.substrate.get_block_metadata = MagicMock(return_value=metadata_decoder)
+        cls.substrate.get_block_metadata = MagicMock(return_value = metadata_decoder)
 
         def mocked_request(method, params):
             if method == 'state_getRuntimeVersion':
@@ -80,24 +80,24 @@ class TestHelperFunctions(unittest.TestCase):
 
             raise NotImplementedError(method)
 
-        cls.substrate.rpc_request = MagicMock(side_effect=mocked_request)
+        cls.substrate.rpc_request = MagicMock(side_effect = mocked_request)
 
-        cls.empty_substrate = SubstrateInterface(url='dummy', ss58_format=42, type_registry_preset='kusama')
+        cls.empty_substrate = SubstrateInterface(url='dummy', ss58_format = 42, type_registry_preset='kusama')
 
         def mocked_request(method, params):
 
             return {'jsonrpc': '2.0', 'result': None, 'id': 1}
 
-        cls.empty_substrate.rpc_request = MagicMock(side_effect=mocked_request)
+        cls.empty_substrate.rpc_request = MagicMock(side_effect = mocked_request)
 
-        cls.error_substrate = SubstrateInterface(url='wss://kusama-rpc.polkadot.io', ss58_format=2, type_registry_preset='kusama')
+        cls.error_substrate = SubstrateInterface(url='wss://kusama-rpc.polkadot.io', ss58_format = 2, type_registry_preset='kusama')
 
         # def mocked_request(method, params):
         #     return {'jsonrpc': '2.0', 'error': {
         #         'code': -32602, 'message': 'Generic error message'
         #     }, 'id': 1}
         #
-        # cls.error_substrate.rpc_request = MagicMock(side_effect=mocked_request)
+        # cls.error_substrate.rpc_request = MagicMock(side_effect = mocked_request)
 
     def test_decode_scale(self):
         self.assertEqual(self.substrate.decode_scale('Compact<u32>', '0x08'), 2)
@@ -192,7 +192,7 @@ class TestHelperFunctions(unittest.TestCase):
             block_hash="0x6666666666666666666666666666666666666666666666666666666666666666"
         ))
 
-        self.assertIsNone(self.empty_substrate.get_block_hash(block_id=99999999999999999))
+        self.assertIsNone(self.empty_substrate.get_block_hash(block_id = 99999999999999999))
         self.assertIsNone(self.empty_substrate.get_block_header(block_hash='0x'))
         self.assertIsNone(self.empty_substrate.get_block_metadata(block_hash='0x')['result'])
         self.assertIsNone(self.empty_substrate.get_block_runtime_version(block_hash='0x'))
@@ -285,7 +285,7 @@ class TestRPCHelperFunctions(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.substrate = SubstrateInterface(url=POLKADOT_NODE_URL)
+        cls.substrate = SubstrateInterface(url = POLKADOT_NODE_URL)
         cls.substrate.orig_rpc_request = cls.substrate.rpc_request
 
         def mocked_request(method, params):
@@ -299,7 +299,7 @@ class TestRPCHelperFunctions(unittest.TestCase):
 
             return cls.substrate.orig_rpc_request(method, params)
 
-        cls.substrate.rpc_request = MagicMock(side_effect=mocked_request)
+        cls.substrate.rpc_request = MagicMock(side_effect = mocked_request)
 
     def test_pending_extrinsics(self):
         pending_extrinsics = self.substrate.retrieve_pending_extrinsics()
@@ -314,7 +314,7 @@ class SS58HelperTestCase(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.keypair = Keypair.create_from_uri('//Alice')
 
-        cls.substrate = SubstrateInterface(url=POLKADOT_NODE_URL)
+        cls.substrate = SubstrateInterface(url = POLKADOT_NODE_URL)
 
     def test_ss58_decode(self):
 
@@ -336,7 +336,7 @@ class SS58HelperTestCase(unittest.TestCase):
 
     def test_ss58_encode_custom_format(self):
         ss58_address = self.substrate.ss58_encode(
-            "0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d", ss58_format=2
+            "0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d", ss58_format = 2
         )
         self.assertEqual("HNZata7iMYWmk5RvZRTiAsSDhV8366zq2YGb3tLH5Upf74F", ss58_address)
 

@@ -51,7 +51,7 @@ def decode_pair_from_encrypted_json(json_data: Union[str, dict], passphrase: str
         p = int.from_bytes(encrypted[36:40], byteorder='little')
         r = int.from_bytes(encrypted[40:44], byteorder='little')
 
-        password = scrypt(passphrase.encode(), salt, n=n, r=r, p=p, dklen=32, maxmem=2 ** 26)
+        password = scrypt(passphrase.encode(), salt, n = n, r = r, p = p, dklen = 32, maxmem = 2 ** 26)
         encrypted = encrypted[SCRYPT_LENGTH:]
 
     else:
@@ -63,7 +63,7 @@ def decode_pair_from_encrypted_json(json_data: Union[str, dict], passphrase: str
     nonce = encrypted[0:NONCE_LENGTH]
     message = encrypted[NONCE_LENGTH:]
 
-    secret_box = SecretBox(key=password)
+    secret_box = SecretBox(key = password)
     decrypted = secret_box.decrypt(message, nonce)
 
     # Decode PKCS8 message
@@ -123,9 +123,9 @@ def encode_pair(public_key: bytes, private_key: bytes, passphrase: str) -> bytes
     message = encode_pkcs8(public_key, private_key)
 
     salt = urandom(SALT_LENGTH)
-    password = scrypt(passphrase.encode(), salt, n=SCRYPT_N, r=SCRYPT_R, p=SCRYPT_P, dklen=32, maxmem=2 ** 26)
+    password = scrypt(passphrase.encode(), salt, n = SCRYPT_N, r = SCRYPT_R, p = SCRYPT_P, dklen = 32, maxmem = 2 ** 26)
 
-    secret_box = SecretBox(key=password)
+    secret_box = SecretBox(key = password)
     message = secret_box.encrypt(message)
 
     scrypt_params = SCRYPT_N.to_bytes(4, 'little') + SCRYPT_P.to_bytes(4, 'little') + SCRYPT_R.to_bytes(4, 'little')

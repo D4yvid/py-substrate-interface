@@ -70,19 +70,19 @@ class SS58TestCase(unittest.TestCase):
         self.assertEqual('F7NZ', ss58_encode_account_index(1))
 
     def test_encode_1_byte_account_index_with_format(self):
-        self.assertEqual('g4b', ss58_encode_account_index(1, ss58_format=2))
-        self.assertEqual('g4b', ss58_encode('0x01', ss58_format=2))
+        self.assertEqual('g4b', ss58_encode_account_index(1, ss58_format = 2))
+        self.assertEqual('g4b', ss58_encode('0x01', ss58_format = 2))
 
     def test_encode_2_bytes_account_index(self):
-        self.assertEqual('3xygo', ss58_encode_account_index(256, ss58_format=2))
-        self.assertEqual('3xygo', ss58_encode('0x0001', ss58_format=2))
+        self.assertEqual('3xygo', ss58_encode_account_index(256, ss58_format = 2))
+        self.assertEqual('3xygo', ss58_encode('0x0001', ss58_format = 2))
 
     def test_encode_4_bytes_account_index(self):
-        self.assertEqual('zswfoZa', ss58_encode_account_index(67305985, ss58_format=2))
-        self.assertEqual('zswfoZa', ss58_encode('0x01020304', ss58_format=2))
+        self.assertEqual('zswfoZa', ss58_encode_account_index(67305985, ss58_format = 2))
+        self.assertEqual('zswfoZa', ss58_encode('0x01020304', ss58_format = 2))
 
     def test_encode_8_bytes_account_index(self):
-        self.assertEqual('848Gh2GcGaZia', ss58_encode('0x2a2c0a0000000000', ss58_format=2))
+        self.assertEqual('848Gh2GcGaZia', ss58_encode('0x2a2c0a0000000000', ss58_format = 2))
 
     def test_decode_1_byte_account_index(self):
         self.assertEqual(1, ss58_decode_account_index('F7NZ'))
@@ -107,21 +107,21 @@ class SS58TestCase(unittest.TestCase):
 
         self.assertEqual(
             'yGHU8YKprxHbHdEv7oUK4rzMZXtsdhcXVG2CAMyC9WhzhjH2k',
-            ss58_encode(public_key, ss58_format=255)
+            ss58_encode(public_key, ss58_format = 255)
         )
 
     def test_encode_subkey_generated_pairs(self):
         for subkey_pair in self.subkey_pairs:
             self.assertEqual(
                 subkey_pair['address'],
-                ss58_encode(address=subkey_pair['public_key'], ss58_format=subkey_pair['ss58_format'])
+                ss58_encode(address = subkey_pair['public_key'], ss58_format = subkey_pair['ss58_format'])
             )
 
     def test_decode_subkey_generated_pairs(self):
         for subkey_pair in self.subkey_pairs:
             self.assertEqual(
                 subkey_pair['public_key'],
-                '0x' + ss58_decode(address=subkey_pair['address'], valid_ss58_format=subkey_pair['ss58_format'])
+                '0x' + ss58_decode(address = subkey_pair['address'], valid_ss58_format = subkey_pair['ss58_format'])
             )
 
     def test_invalid_ss58_format_range_exceptions(self):
@@ -131,18 +131,18 @@ class SS58TestCase(unittest.TestCase):
         self.assertEqual('Invalid value for ss58_format', str(cm.exception))
 
         with self.assertRaises(ValueError) as cm:
-            ss58_encode(self.alice_keypair.public_key, ss58_format=16384)
+            ss58_encode(self.alice_keypair.public_key, ss58_format = 16384)
 
         self.assertEqual('Invalid value for ss58_format', str(cm.exception))
 
     def test_invalid_reserved_ss58_format(self):
         with self.assertRaises(ValueError) as cm:
-            ss58_encode(self.alice_keypair.public_key, ss58_format=46)
+            ss58_encode(self.alice_keypair.public_key, ss58_format = 46)
 
         self.assertEqual('Invalid value for ss58_format', str(cm.exception))
 
         with self.assertRaises(ValueError) as cm:
-            ss58_encode(self.alice_keypair.public_key, ss58_format=47)
+            ss58_encode(self.alice_keypair.public_key, ss58_format = 47)
 
         self.assertEqual('Invalid value for ss58_format', str(cm.exception))
 
@@ -171,7 +171,7 @@ class SS58TestCase(unittest.TestCase):
 
     def test_invalid_ss58_format_check(self):
         with self.assertRaises(ValueError) as cm:
-            ss58_decode('5GoKvZWG5ZPYL1WUovuHW3zJBWBP5eT8CbqjdRY4Q6iMaQua', valid_ss58_format=2)
+            ss58_decode('5GoKvZWG5ZPYL1WUovuHW3zJBWBP5eT8CbqjdRY4Q6iMaQua', valid_ss58_format = 2)
 
         self.assertEqual('Invalid SS58 format', str(cm.exception))
 
@@ -195,13 +195,13 @@ class SS58TestCase(unittest.TestCase):
 
     def test_is_valid_ss58_address(self):
         self.assertTrue(is_valid_ss58_address('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'))
-        self.assertTrue(is_valid_ss58_address('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', valid_ss58_format=42))
-        self.assertFalse(is_valid_ss58_address('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', valid_ss58_format=2))
+        self.assertTrue(is_valid_ss58_address('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', valid_ss58_format = 42))
+        self.assertFalse(is_valid_ss58_address('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', valid_ss58_format = 2))
 
-        self.assertTrue(is_valid_ss58_address('GLdQ4D4wkeEJUX8DBT9HkpycFVYQZ3fmJyQ5ZgBRxZ4LD3S', valid_ss58_format=2))
-        self.assertFalse(is_valid_ss58_address('GLdQ4D4wkeEJUX8DBT9HkpycFVYQZ3fmJyQ5ZgBRxZ4LD3S', valid_ss58_format=42))
-        self.assertFalse(is_valid_ss58_address('GLdQ4D4wkeEJUX8DBT9HkpycFVYQZ3fmJyQ5ZgBRxZ4LD3S', valid_ss58_format=0))
-        self.assertTrue(is_valid_ss58_address('12gX42C4Fj1wgtfgoP624zeHrcPBqzhb4yAENyvFdGX6EUnN', valid_ss58_format=0))
+        self.assertTrue(is_valid_ss58_address('GLdQ4D4wkeEJUX8DBT9HkpycFVYQZ3fmJyQ5ZgBRxZ4LD3S', valid_ss58_format = 2))
+        self.assertFalse(is_valid_ss58_address('GLdQ4D4wkeEJUX8DBT9HkpycFVYQZ3fmJyQ5ZgBRxZ4LD3S', valid_ss58_format = 42))
+        self.assertFalse(is_valid_ss58_address('GLdQ4D4wkeEJUX8DBT9HkpycFVYQZ3fmJyQ5ZgBRxZ4LD3S', valid_ss58_format = 0))
+        self.assertTrue(is_valid_ss58_address('12gX42C4Fj1wgtfgoP624zeHrcPBqzhb4yAENyvFdGX6EUnN', valid_ss58_format = 0))
 
         self.assertFalse(is_valid_ss58_address('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQ'))
         self.assertFalse(is_valid_ss58_address('6GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'))

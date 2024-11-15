@@ -157,7 +157,7 @@ class SubstrateNodeExtension(SearchExtension):
         for block_number in range(block_start, block_end + 1):
             block_hash = self.substrate.get_block_hash(block_number)
 
-            for extrinsic in self.substrate.get_extrinsics(block_hash=block_hash):
+            for extrinsic in self.substrate.get_extrinsics(block_hash = block_hash):
                 if pallet_name is not None and pallet_name != extrinsic.value['call']['call_module']:
                     continue
 
@@ -195,7 +195,7 @@ class SubstrateNodeExtension(SearchExtension):
 
         for block_number in range(block_start, block_end + 1):
             block_hash = self.substrate.get_block_hash(block_number)
-            for event in self.substrate.get_events(block_hash=block_hash):
+            for event in self.substrate.get_events(block_hash = block_hash):
                 if pallet_name is not None and pallet_name != event.value['event']['module_id']:
                     continue
 
@@ -217,7 +217,7 @@ class SubstrateNodeExtension(SearchExtension):
 
     def get_block_timestamp(self, block_number: int) -> int:
         extrinsics = self.filter_extrinsics(
-            block_start=block_number, block_end=block_number, pallet_name="Timestamp",
+            block_start = block_number, block_end = block_number, pallet_name="Timestamp",
             call_name="set"
         )
         return extrinsics[0].value['call']['call_args'][0]['value'] / 1000
@@ -237,7 +237,7 @@ class SubstrateNodeExtension(SearchExtension):
         -------
         int
         """
-        accuracy = timedelta(seconds=block_time)
+        accuracy = timedelta(seconds = block_time)
 
         target_block_timestamp = block_datetime.timestamp()
 
@@ -251,7 +251,7 @@ class SubstrateNodeExtension(SearchExtension):
         if current_delta < 0:
             raise ValueError("Requested block_datetime is higher than current chain tip")
 
-        while accuracy < timedelta(seconds=math.fabs(current_delta)):
+        while accuracy < timedelta(seconds = math.fabs(current_delta)):
 
             predicted_block_number = math.ceil(predicted_block_number - current_delta / block_time)
 

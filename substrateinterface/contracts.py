@@ -175,7 +175,7 @@ class ContractMetadata:
             portable_registry.encode({"types": self.metadata_dict["types"]})
 
             self.substrate.runtime_config.update_from_scale_info_types(
-                portable_registry['types'], prefix=self.type_string_prefix
+                portable_registry['types'], prefix = self.type_string_prefix
             )
 
     def generate_constructor_data(self, name, args: dict = None) -> ScaleBytes:
@@ -204,8 +204,8 @@ class ContractMetadata:
                         raise ValueError(f"Argument \"{arg['label']}\" is missing")
                     else:
                         data += self.substrate.encode_scale(
-                            type_string=self.get_type_string_for_metadata_type(arg['type']['type']),
-                            value=args[arg['label']]
+                            type_string = self.get_type_string_for_metadata_type(arg['type']['type']),
+                            value = args[arg['label']]
                         )
                 return data
 
@@ -375,8 +375,8 @@ class ContractMetadata:
                     else:
 
                         data += self.substrate.encode_scale(
-                            type_string=self.get_type_string_for_metadata_type(arg['type']['type']),
-                            value=args[arg['label']]
+                            type_string = self.get_type_string_for_metadata_type(arg['type']['type']),
+                            value = args[arg['label']]
                         )
                 return data
 
@@ -480,12 +480,12 @@ class ContractExecutionReceipt(ExtrinsicReceipt):
         ContractExecutionReceipt
         """
         return cls(
-            substrate=receipt.substrate,
-            extrinsic_hash=receipt.extrinsic_hash,
-            block_hash=receipt.block_hash,
-            finalized=receipt.finalized,
-            contract_metadata=contract_metadata,
-            contract_address=contract_address
+            substrate = receipt.substrate,
+            extrinsic_hash = receipt.extrinsic_hash,
+            block_hash = receipt.block_hash,
+            finalized = receipt.finalized,
+            contract_metadata = contract_metadata,
+            contract_address = contract_address
         )
 
     def process_events(self):
@@ -512,9 +512,9 @@ class ContractExecutionReceipt(ExtrinsicReceipt):
 
                         # Create contract event
                         contract_event_obj = ContractEvent(
-                            data=ScaleBytes(contract_data),
-                            runtime_config=self.substrate.runtime_config,
-                            contract_metadata=self.contract_metadata
+                            data = ScaleBytes(contract_data),
+                            runtime_config = self.substrate.runtime_config,
+                            contract_metadata = self.contract_metadata
                         )
 
                         contract_event_obj.decode()
@@ -526,9 +526,9 @@ class ContractExecutionReceipt(ExtrinsicReceipt):
 
                         # Create contract event
                         contract_event_obj = ContractEvent(
-                            data=ScaleBytes(event.params[1]['value']),
-                            runtime_config=self.substrate.runtime_config,
-                            contract_metadata=self.contract_metadata
+                            data = ScaleBytes(event.params[1]['value']),
+                            runtime_config = self.substrate.runtime_config,
+                            contract_metadata = self.contract_metadata
                         )
 
                         contract_event_obj.decode()
@@ -583,11 +583,11 @@ class ContractCode:
 
         with open(os.path.abspath(wasm_file), 'rb') as fp:
             wasm_bytes = fp.read()
-            code_hash = blake2b(wasm_bytes, digest_size=32).digest()
+            code_hash = blake2b(wasm_bytes, digest_size = 32).digest()
 
-        metadata = ContractMetadata.create_from_file(metadata_file, substrate=substrate)
+        metadata = ContractMetadata.create_from_file(metadata_file, substrate = substrate)
 
-        return cls(code_hash=code_hash, metadata=metadata, wasm_bytes=wasm_bytes, substrate=substrate)
+        return cls(code_hash = code_hash, metadata = metadata, wasm_bytes = wasm_bytes, substrate = substrate)
 
     @classmethod
     def create_from_code_hash(cls, code_hash: bytes, metadata_file: str,
@@ -606,9 +606,9 @@ class ContractCode:
         ContractCode
         """
 
-        metadata = ContractMetadata.create_from_file(metadata_file, substrate=substrate)
+        metadata = ContractMetadata.create_from_file(metadata_file, substrate = substrate)
 
-        return cls(code_hash=code_hash, metadata=metadata, substrate=substrate)
+        return cls(code_hash = code_hash, metadata = metadata, substrate = substrate)
 
     def upload_wasm(self, keypair: Keypair, storage_deposit_limit: int = None) -> ExtrinsicReceipt:
         """
@@ -637,16 +637,16 @@ class ContractCode:
 
         call = self.substrate.compose_call(
             call_module="Contracts",
-            call_function=call_function.name,
+            call_function = call_function.name,
             call_params={
                 'code': '0x{}'.format(self.wasm_bytes.hex()),
                 'storage_deposit_limit': storage_deposit_limit
             }
         )
 
-        extrinsic = self.substrate.create_signed_extrinsic(call=call, keypair=keypair)
+        extrinsic = self.substrate.create_signed_extrinsic(call = call, keypair = keypair)
 
-        return self.substrate.submit_extrinsic(extrinsic, wait_for_inclusion=True)
+        return self.substrate.submit_extrinsic(extrinsic, wait_for_inclusion = True)
 
     def deploy(self, keypair: Keypair, constructor: str, args: dict = None, value: int = 0, gas_limit: dict = None,
                deployment_salt: str = None, upload_code: bool = False, storage_deposit_limit: int = None
@@ -672,7 +672,7 @@ class ContractCode:
         """
 
         # Lookup constructor
-        data = self.metadata.generate_constructor_data(name=constructor, args=args)
+        data = self.metadata.generate_constructor_data(name = constructor, args = args)
 
         if gas_limit is None:
             gas_limit = {'ref_time': 25990000000, 'proof_size': 11990383647911208550}
@@ -709,9 +709,9 @@ class ContractCode:
                 }
             )
 
-        extrinsic = self.substrate.create_signed_extrinsic(call=call, keypair=keypair)
+        extrinsic = self.substrate.create_signed_extrinsic(call = call, keypair = keypair)
 
-        result = self.substrate.submit_extrinsic(extrinsic, wait_for_inclusion=True)
+        result = self.substrate.submit_extrinsic(extrinsic, wait_for_inclusion = True)
 
         if not result.is_success:
             raise ExtrinsicFailedException(result.error_message)
@@ -722,17 +722,17 @@ class ContractCode:
 
                 if event.value['event']['event_id'] == 'Instantiated':
                     return ContractInstance(
-                        contract_address=event.value['event']['attributes']['contract'],
-                        metadata=self.metadata,
-                        substrate=self.substrate
+                        contract_address = event.value['event']['attributes']['contract'],
+                        metadata = self.metadata,
+                        substrate = self.substrate
                     )
             else:
 
                 if event.event.name == 'Instantiated':
                     return ContractInstance(
-                        contract_address=event.params[1]['value'],
-                        metadata=self.metadata,
-                        substrate=self.substrate
+                        contract_address = event.params[1]['value'],
+                        metadata = self.metadata,
+                        substrate = self.substrate
                     )
 
         raise DeployContractFailedException()
@@ -781,9 +781,9 @@ class ContractInstance:
         ContractInstance
         """
 
-        metadata = ContractMetadata.create_from_file(metadata_file, substrate=substrate)
+        metadata = ContractMetadata.create_from_file(metadata_file, substrate = substrate)
 
-        return cls(contract_address=contract_address, metadata=metadata, substrate=substrate)
+        return cls(contract_address = contract_address, metadata = metadata, substrate = substrate)
 
     def read(self, keypair: Keypair, method: str, args: dict = None,
              value: int = 0, gas_limit: int = None, block_hash: str = None) -> GenericContractExecResult:
@@ -806,7 +806,7 @@ class ContractInstance:
         GenericContractExecResult
         """
 
-        input_data = self.metadata.generate_message_data(name=method, args=args)
+        input_data = self.metadata.generate_message_data(name = method, args = args)
 
         # Execute runtime call in ContractsApi
         call_result = self.substrate.runtime_call("ContractsApi", "call", {
@@ -862,7 +862,7 @@ class ContractInstance:
             gas_predit_result = self.read(keypair, method, args, value)
             gas_limit = gas_predit_result.gas_required
 
-        input_data = self.metadata.generate_message_data(name=method, args=args)
+        input_data = self.metadata.generate_message_data(name = method, args = args)
 
         call = self.substrate.compose_call(
             call_module='Contracts',
@@ -876,10 +876,10 @@ class ContractInstance:
             }
         )
 
-        extrinsic = self.substrate.create_signed_extrinsic(call=call, keypair=keypair)
+        extrinsic = self.substrate.create_signed_extrinsic(call = call, keypair = keypair)
 
         receipt = self.substrate.submit_extrinsic(
-            extrinsic, wait_for_inclusion=wait_for_inclusion, wait_for_finalization=wait_for_finalization
+            extrinsic, wait_for_inclusion = wait_for_inclusion, wait_for_finalization = wait_for_finalization
         )
 
         return ContractExecutionReceipt.create_from_extrinsic_receipt(receipt, self.metadata, self.contract_address)

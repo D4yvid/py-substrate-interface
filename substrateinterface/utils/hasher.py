@@ -33,7 +33,7 @@ def blake2_256(data):
     -------
 
     """
-    return blake2b(data, digest_size=32).digest()
+    return blake2b(data, digest_size = 32).digest()
 
 
 def blake2_128(data):
@@ -48,7 +48,7 @@ def blake2_128(data):
     -------
 
     """
-    return blake2b(data, digest_size=16).digest()
+    return blake2b(data, digest_size = 16).digest()
 
 
 def blake2_128_concat(data):
@@ -64,7 +64,7 @@ def blake2_128_concat(data):
     -------
 
     """
-    return blake2b(data, digest_size=16).digest() + data
+    return blake2b(data, digest_size = 16).digest() + data
 
 
 def xxh128(data):
@@ -79,10 +79,10 @@ def xxh128(data):
     -------
 
     """
-    storage_key1 = bytearray(xxhash.xxh64(data, seed=0).digest())
+    storage_key1 = bytearray(xxhash.xxh64(data, seed = 0).digest())
     storage_key1.reverse()
 
-    storage_key2 = bytearray(xxhash.xxh64(data, seed=1).digest())
+    storage_key2 = bytearray(xxhash.xxh64(data, seed = 1).digest())
     storage_key2.reverse()
 
     return storage_key1 + storage_key2
@@ -101,14 +101,14 @@ def two_x64_concat(data):
     -------
 
     """
-    storage_key = bytearray(xxhash.xxh64(data, seed=0).digest())
+    storage_key = bytearray(xxhash.xxh64(data, seed = 0).digest())
     storage_key.reverse()
 
     return storage_key + data
 
 
 def xxh64(data):
-    storage_key = bytearray(xxhash.xxh64(data, seed=0).digest())
+    storage_key = bytearray(xxhash.xxh64(data, seed = 0).digest())
     storage_key.reverse()
 
     return storage_key

@@ -27,8 +27,8 @@ class RuntimeCallTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.substrate = SubstrateInterface(
-            url=settings.POLKADOT_NODE_URL,
-            ss58_format=0,
+            url = settings.POLKADOT_NODE_URL,
+            ss58_format = 0,
             type_registry_preset='polkadot'
         )
         # Create new keypair
@@ -58,7 +58,7 @@ class RuntimeCallTestCase(unittest.TestCase):
             }
         )
 
-        extrinsic = self.substrate.create_signed_extrinsic(call=call, keypair=self.keypair, tip=1)
+        extrinsic = self.substrate.create_signed_extrinsic(call = call, keypair = self.keypair, tip = 1)
         extrinsic_len = self.substrate.create_scale_object('u32')
         extrinsic_len.encode(len(extrinsic.data))
 

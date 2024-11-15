@@ -18,7 +18,7 @@ from substrateinterface import SubstrateInterface, Keypair
 
 
 # import logging
-# logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level = logging.DEBUG)
 
 
 substrate = SubstrateInterface(
@@ -37,6 +37,6 @@ call = substrate.compose_call(
 )
 
 # Get payment info
-payment_info = substrate.get_payment_info(call=call, keypair=keypair)
+payment_info = substrate.get_payment_info(call = call, keypair = keypair)
 
 print("Payment info: ", payment_info)

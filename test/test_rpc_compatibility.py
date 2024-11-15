@@ -36,12 +36,12 @@ class RPCCompatilibityTestCase(unittest.TestCase):
             os.path.join(os.path.dirname(__file__), 'fixtures', 'metadata_hex.json')
         )
 
-        cls.substrate = SubstrateInterface(url='dummy', ss58_format=42, type_registry_preset='substrate-node-template')
+        cls.substrate = SubstrateInterface(url='dummy', ss58_format = 42, type_registry_preset='substrate-node-template')
         metadata_decoder = cls.substrate.runtime_config.create_scale_object(
             'MetadataVersioned', ScaleBytes(cls.metadata_fixture_dict['V14'])
         )
         metadata_decoder.decode()
-        cls.substrate.get_block_metadata = MagicMock(return_value=metadata_decoder)
+        cls.substrate.get_block_metadata = MagicMock(return_value = metadata_decoder)
 
         def mocked_query(module, storage_function, block_hash):
             if module == 'Session' and storage_function == 'Validators':
@@ -54,7 +54,7 @@ class RPCCompatilibityTestCase(unittest.TestCase):
 
             raise ValueError(f"Unsupported mocked query {module}.{storage_function} @ {block_hash}")
 
-        def mocked_request(method, params, result_handler=None):
+        def mocked_request(method, params, result_handler = None):
 
             if method in ['chain_getBlockHash', 'chain_getHead', 'chain_getFinalisedHead', 'chain_getFinalizedHead']:
                 return {
@@ -163,8 +163,8 @@ class RPCCompatilibityTestCase(unittest.TestCase):
 
             raise ValueError(f"Unsupported mocked method {method}")
 
-        cls.substrate.rpc_request = MagicMock(side_effect=mocked_request)
-        cls.substrate.query = MagicMock(side_effect=mocked_query)
+        cls.substrate.rpc_request = MagicMock(side_effect = mocked_request)
+        cls.substrate.query = MagicMock(side_effect = mocked_query)
 
     def test_get_block_by_head(self):
 

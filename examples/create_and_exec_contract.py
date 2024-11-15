@@ -21,7 +21,7 @@ from substrateinterface import SubstrateInterface, Keypair
 
 # Enable for debugging purposes
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level = logging.DEBUG)
 
 substrate = SubstrateInterface(url='wss://rococo-contracts-rpc.polkadot.io')
 keypair = Keypair.create_from_uri('//Alice')
@@ -36,28 +36,28 @@ if contract_info.value:
 
     # Create contract instance from deterministic address
     contract = ContractInstance.create_from_address(
-        contract_address=contract_address,
-        metadata_file=os.path.join(os.path.dirname(__file__), 'assets', 'flipper-v5.json'),
-        substrate=substrate
+        contract_address = contract_address,
+        metadata_file = os.path.join(os.path.dirname(__file__), 'assets', 'flipper-v5.json'),
+        substrate = substrate
     )
 else:
 
     # Upload WASM code
     code = ContractCode.create_from_contract_files(
-        metadata_file=os.path.join(os.path.dirname(__file__), 'assets', 'flipper-v5.json'),
-        wasm_file=os.path.join(os.path.dirname(__file__), 'assets', 'flipper-v5.wasm'),
-        substrate=substrate
+        metadata_file = os.path.join(os.path.dirname(__file__), 'assets', 'flipper-v5.json'),
+        wasm_file = os.path.join(os.path.dirname(__file__), 'assets', 'flipper-v5.wasm'),
+        substrate = substrate
     )
 
     # Deploy contract
     print('Deploy contract...')
     contract = code.deploy(
-        keypair=keypair,
+        keypair = keypair,
         constructor="new",
         args={'init_value': True},
-        value=0,
+        value = 0,
         gas_limit={'ref_time': 147523041, 'proof_size': 16689},
-        upload_code=True
+        upload_code = True
     )
 
     print(f'✅ Deployed @ {contract.contract_address}')
@@ -76,7 +76,7 @@ print('Gas estimate: ', gas_predit_result.gas_required)
 print('Executing contract call...')
 contract_receipt = contract.exec(keypair, 'flip', args={
 
-}, gas_limit=gas_predit_result.gas_required)
+}, gas_limit = gas_predit_result.gas_required)
 
 if contract_receipt.is_success:
     print(f'Events triggered in contract: {contract_receipt.contract_events}')

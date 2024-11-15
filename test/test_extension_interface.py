@@ -29,14 +29,14 @@ class ExtensionsTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.substrate = SubstrateInterface(
-            url=settings.POLKADOT_NODE_URL
+            url = settings.POLKADOT_NODE_URL
         )
-        cls.substrate.register_extension(SubstrateNodeExtension(max_block_range=100))
+        cls.substrate.register_extension(SubstrateNodeExtension(max_block_range = 100))
 
     def test_search_block_number(self):
-        block_datetime = datetime(2020, 7, 12, 0, 0, 0, tzinfo=timezone.utc)
+        block_datetime = datetime(2020, 7, 12, 0, 0, 0, tzinfo = timezone.utc)
 
-        block_number = self.substrate.extensions.search_block_number(block_datetime=block_datetime)
+        block_number = self.substrate.extensions.search_block_number(block_datetime = block_datetime)
 
         self.assertGreaterEqual(block_number, 665270)
         self.assertLessEqual(block_number, 665280)

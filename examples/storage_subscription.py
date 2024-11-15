@@ -36,5 +36,5 @@ storage_keys = [
 ]
 
 result = substrate.subscribe_storage(
-    storage_keys=storage_keys, subscription_handler=subscription_handler
+    storage_keys = storage_keys, subscription_handler = subscription_handler
 )

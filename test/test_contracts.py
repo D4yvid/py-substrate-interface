@@ -27,12 +27,12 @@ class ContractMetadataTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.substrate = SubstrateInterface(url=settings.KUSAMA_NODE_URL)
+        cls.substrate = SubstrateInterface(url = settings.KUSAMA_NODE_URL)
 
     def setUp(self) -> None:
         self.contract_metadata = ContractMetadata.create_from_file(
-            metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'erc20-v0.json'),
-            substrate=self.substrate
+            metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'erc20-v0.json'),
+            substrate = self.substrate
         )
 
     def test_metadata_parsed(self):
@@ -41,8 +41,8 @@ class ContractMetadataTestCase(unittest.TestCase):
     def test_incorrect_metadata_file(self):
         with self.assertRaises(ContractMetadataParseException):
             ContractMetadata.create_from_file(
-                metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'incorrect_metadata.json'),
-                substrate=self.substrate
+                metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'incorrect_metadata.json'),
+                substrate = self.substrate
             )
 
     def test_extract_typestring_from_types(self):
@@ -123,9 +123,9 @@ class ContractMetadataTestCase(unittest.TestCase):
                               '736326c9fea17e25fc5287613693c912909cb226aa4794f26a480000a7dcf75015000000000000000000'
 
         contract_event_obj = ContractEvent(
-            data=ScaleBytes(contract_event_data),
-            runtime_config=self.substrate.runtime_config,
-            contract_metadata=self.contract_metadata
+            data = ScaleBytes(contract_event_data),
+            runtime_config = self.substrate.runtime_config,
+            contract_metadata = self.contract_metadata
         )
 
         contract_event_obj.decode()
@@ -142,16 +142,16 @@ class ContractMetadataTestCase(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
 
             ContractMetadata.create_from_file(
-                metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'unsupported_type_metadata.json'),
-                substrate=self.substrate
+                metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'unsupported_type_metadata.json'),
+                substrate = self.substrate
             )
 
 
 class ContractMetadataV1TestCase(ContractMetadataTestCase):
     def setUp(self) -> None:
         self.contract_metadata = ContractMetadata.create_from_file(
-            metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'erc20-v1.json'),
-            substrate=self.substrate
+            metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'erc20-v1.json'),
+            substrate = self.substrate
         )
 
     def test_metadata_parsed(self):
@@ -160,8 +160,8 @@ class ContractMetadataV1TestCase(ContractMetadataTestCase):
     def test_incorrect_metadata_file(self):
         with self.assertRaises(ContractMetadataParseException):
             ContractMetadata.create_from_file(
-                metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'incorrect_metadata.json'),
-                substrate=self.substrate
+                metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'incorrect_metadata.json'),
+                substrate = self.substrate
             )
 
     def test_extract_typestring_from_types(self):
@@ -252,9 +252,9 @@ class ContractMetadataV1TestCase(ContractMetadataTestCase):
                               '736326c9fea17e25fc5287613693c912909cb226aa4794f26a480000a7dcf75015000000000000000000'
 
         contract_event_obj = ContractEvent(
-            data=ScaleBytes(contract_event_data),
-            runtime_config=self.substrate.runtime_config,
-            contract_metadata=self.contract_metadata
+            data = ScaleBytes(contract_event_data),
+            runtime_config = self.substrate.runtime_config,
+            contract_metadata = self.contract_metadata
         )
 
         contract_event_obj.decode()
@@ -271,16 +271,16 @@ class ContractMetadataV1TestCase(ContractMetadataTestCase):
         with self.assertRaises(NotImplementedError):
 
             ContractMetadata.create_from_file(
-                metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'unsupported_type_metadata.json'),
-                substrate=self.substrate
+                metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'unsupported_type_metadata.json'),
+                substrate = self.substrate
             )
 
 
 class ContractMetadataV3TestCase(ContractMetadataV1TestCase):
     def setUp(self) -> None:
         self.contract_metadata = ContractMetadata.create_from_file(
-            metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'erc20-v3.json'),
-            substrate=self.substrate
+            metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'erc20-v3.json'),
+            substrate = self.substrate
         )
 
 
@@ -288,12 +288,12 @@ class FlipperMetadataV3TestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.substrate = SubstrateInterface(url=settings.KUSAMA_NODE_URL)
+        cls.substrate = SubstrateInterface(url = settings.KUSAMA_NODE_URL)
 
     def setUp(self) -> None:
         self.contract_metadata = ContractMetadata.create_from_file(
-            metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'flipper-v3.json'),
-            substrate=self.substrate
+            metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'flipper-v3.json'),
+            substrate = self.substrate
         )
 
     def test_metadata_parsed(self):
@@ -302,8 +302,8 @@ class FlipperMetadataV3TestCase(unittest.TestCase):
     def test_incorrect_metadata_file(self):
         with self.assertRaises(ContractMetadataParseException):
             ContractMetadata.create_from_file(
-                metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'incorrect_metadata.json'),
-                substrate=self.substrate
+                metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'incorrect_metadata.json'),
+                substrate = self.substrate
             )
 
     def test_extract_typestring_from_types(self):
@@ -354,7 +354,7 @@ class FlipperInstanceTestCase(unittest.TestCase):
 
         class MockedSubstrateInterface(SubstrateInterface):
 
-            def rpc_request(self, method, params, result_handler=None):
+            def rpc_request(self, method, params, result_handler = None):
                 if method == 'state_call':
                     return {
                         'jsonrpc': '2.0',
@@ -375,7 +375,7 @@ class FlipperInstanceTestCase(unittest.TestCase):
 
                 return super().rpc_request(method, params, result_handler)
 
-        cls.substrate = MockedSubstrateInterface(url=settings.KUSAMA_NODE_URL, type_registry_preset='canvas')
+        cls.substrate = MockedSubstrateInterface(url = settings.KUSAMA_NODE_URL, type_registry_preset='canvas')
         # cls.substrate = SubstrateInterface(url='ws://127.0.0.1:9944')
 
         cls.keypair = Keypair.create_from_uri('//Alice')
@@ -383,8 +383,8 @@ class FlipperInstanceTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self.contract = ContractInstance.create_from_address(
             contract_address="5GhwarrVMH8kjb8XyW6zCfURHbHy3v84afzLbADyYYX6H2Kk",
-            metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'flipper-v3.json'),
-            substrate=self.substrate
+            metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'flipper-v3.json'),
+            substrate = self.substrate
         )
 
     def test_instance_read(self):
@@ -404,8 +404,8 @@ class FlipperInstanceV4TestCase(FlipperInstanceTestCase):
     def setUp(self) -> None:
         self.contract = ContractInstance.create_from_address(
             contract_address="5DaohteAvvR9PZEhynqWvbFT8HEaHNuiiPTZV61VEUHnqsfU",
-            metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'flipper-v4.json'),
-            substrate=self.substrate
+            metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'flipper-v4.json'),
+            substrate = self.substrate
         )
 
 
@@ -416,7 +416,7 @@ class FlipperInstanceV5TestCase(FlipperInstanceTestCase):
 
         class MockedSubstrateInterface(SubstrateInterface):
 
-            def rpc_request(self, method, params, result_handler=None):
+            def rpc_request(self, method, params, result_handler = None):
                 if method == 'state_call':
                     return {
                         'jsonrpc': '2.0',
@@ -438,7 +438,7 @@ class FlipperInstanceV5TestCase(FlipperInstanceTestCase):
                 return super().rpc_request(method, params, result_handler)
 
         cls.substrate = MockedSubstrateInterface(
-            url=settings.KUSAMA_NODE_URL, type_registry_preset='canvas', type_registry={'types': {"ContractExecResult": "ContractExecResultTo269"}}
+            url = settings.KUSAMA_NODE_URL, type_registry_preset='canvas', type_registry={'types': {"ContractExecResult": "ContractExecResultTo269"}}
         )
 
         cls.keypair = Keypair.create_from_uri('//Alice')
@@ -446,8 +446,8 @@ class FlipperInstanceV5TestCase(FlipperInstanceTestCase):
     def setUp(self) -> None:
         self.contract = ContractInstance.create_from_address(
             contract_address="5DaohteAvvR9PZEhynqWvbFT8HEaHNuiiPTZV61VEUHnqsfU",
-            metadata_file=os.path.join(os.path.dirname(__file__), 'fixtures', 'flipper-v5.json'),
-            substrate=self.substrate
+            metadata_file = os.path.join(os.path.dirname(__file__), 'fixtures', 'flipper-v5.json'),
+            substrate = self.substrate
         )
 
     def test_instance_read(self):
@@ -458,7 +458,7 @@ class FlipperInstanceV5TestCase(FlipperInstanceTestCase):
 
     def test_instance_read_at_not_best_block(self):
         parent_hash = self.substrate.get_block_header()['header']['parentHash']
-        result = self.contract.read(self.keypair, 'get', block_hash=parent_hash)
+        result = self.contract.read(self.keypair, 'get', block_hash = parent_hash)
 
         self.assertEqual({'Ok': False}, result.contract_result_data.value)
 

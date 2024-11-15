@@ -18,14 +18,14 @@ from substrateinterface import SubstrateInterface, Keypair
 from substrateinterface.exceptions import SubstrateRequestException
 
 # import logging
-# logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level = logging.DEBUG)
 
 substrate = SubstrateInterface(
     url="ws://127.0.0.1:9944"
 )
 
 substrate = SubstrateInterface(url="ws://127.0.0.1:9944")
-keypair_alice = Keypair.create_from_uri('//Alice', ss58_format=substrate.ss58_format)
+keypair_alice = Keypair.create_from_uri('//Alice', ss58_format = substrate.ss58_format)
 print(keypair_alice.ss58_address)
 
 keypair = Keypair.create_from_uri('//Alice')
@@ -42,13 +42,13 @@ call = substrate.compose_call(
 print(call.data.to_hex())
 
 extrinsic = substrate.create_signed_extrinsic(
-    call=call,
-    keypair=keypair,
+    call = call,
+    keypair = keypair,
     era={'period': 64}
 )
 
 try:
-    receipt = substrate.submit_extrinsic(extrinsic, wait_for_inclusion=True)
+    receipt = substrate.submit_extrinsic(extrinsic, wait_for_inclusion = True)
 
     print('Extrinsic "{}" included in block "{}"'.format(
         receipt.extrinsic_hash, receipt.block_hash
